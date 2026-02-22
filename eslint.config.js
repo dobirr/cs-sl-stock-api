@@ -12,5 +12,15 @@ export default defineConfig([
         ...globals.node,
       },
     },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'object-curly-newline': [
+        'error',
+        {
+          ImportDeclaration: 'never',
+          ExportDeclaration: 'never',
+        },
+      ],
+    },
   },
 ]);
