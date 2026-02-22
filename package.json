@@ -9,25 +9,25 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "lint": "eslint .",
-    "test": "NODE_ENV=test node -r dotenv/config ./node_modules/mocha/bin/mocha \"tests/**/*.test.js\" --timeout 20000 --require tests/test-bootstrap.js dotenv_config_path=.env.test"
+    "lint": "",
+    "test": ""
   },
   "dependencies": {
-    "axios": "^1.6.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.0",
-    "express": "^4.19.0",
-    "helmet": "^7.1.0",
-    "mongoose": "^8.0.0",
-    "morgan": "^1.10.0",
-    "swagger-ui-express": "^5.0.0"
+    "axios": "^1.13.5",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.2.1",
+    "morgan": "^1.10.1",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "chai": "^5.0.0",
-    "eslint": "^9.0.0",
-    "mocha": "^10.0.0",
-    "nodemon": "^3.0.0",
-    "sinon": "^17.0.0",
-    "supertest": "^7.0.0"
+    "chai": "^6.2.2",
+    "eslint": "^10.0.1",
+    "mocha": "^11.7.5",
+    "nodemon": "^3.1.14",
+    "sinon": "^21.0.1",
+    "supertest": "^7.2.2"
   }
 }

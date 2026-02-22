@@ -36,3 +36,18 @@ Backend API for stock market data access (Finnhub) plus lightweight user/portfol
 ### Install
 ```bash
 pnpm install
+```
+
+### Environment
+```bash
+cp .env.example .env
+```
+
+### Run (dev)
+```bash
+pnpm dev
+```
+
+### Quick checks (M1)
+- Health: `GET /api/v1/health`
+- Swagger UI: `GET /api-docs`
