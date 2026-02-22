@@ -34,7 +34,7 @@ export const connectToDatabase = async (uri) => {
     } catch (error) {
       const delay = Math.min(INITIAL_DELAY_MS * 2 ** (attempt - 1), MAX_DELAY_MS);
       console.error(
-        `[db] connection attempt ${attempt} failed: ${error.message}. Retrying in ${delay}ms`
+        `[db] connection attempt ${attempt} failed: ${error.message}. Retrying in ${delay}ms`,
       );
       await sleep(delay);
     }
