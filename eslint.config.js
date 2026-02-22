@@ -6,7 +6,7 @@ export default defineConfig([
   globalIgnores(['node_modules/**', 'coverage/**', 'dist/**']),
   js.configs.recommended,
   {
-    files: ['**/*.js'],
+    files: ['src/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.node,
@@ -17,10 +17,19 @@ export default defineConfig([
       'object-curly-newline': [
         'error',
         {
-          ImportDeclaration: 'never',
-          ExportDeclaration: 'never',
+          ImportDeclaration: { multiline: true, minProperties: 2, consistent: true },
+          ExportDeclaration: { multiline: true, minProperties: 2, consistent: true },
         },
       ],
+    },
+  },
+  {
+    files: ['tests/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.mocha,
+      },
     },
   },
 ]);
