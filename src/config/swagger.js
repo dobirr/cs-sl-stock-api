@@ -8,6 +8,44 @@ const spec = {
     description: 'Backend API for stock data and lightweight portfolios.',
   },
   servers: [{ url: 'http://localhost:3000' }],
+  components: {
+    schemas: {
+      AuthRequest: {
+        type: 'object',
+        required: ['email', 'password'],
+        properties: {
+          email: { type: 'string', format: 'email', example: 'user@example.com' },
+          password: { type: 'string', minLength: 6, example: 'secret123' },
+        },
+      },
+      RegisterResponse: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', example: '65f1a0d8d9b3e65f2f6e01a1' },
+          email: { type: 'string', format: 'email', example: 'user@example.com' },
+        },
+      },
+      LoginResponse: {
+        type: 'object',
+        properties: {
+          token: { type: 'string', example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' },
+          user: {
+            type: 'object',
+            properties: {
+              id: { type: 'string', example: '65f1a0d8d9b3e65f2f6e01a1' },
+              email: { type: 'string', format: 'email', example: 'user@example.com' },
+            },
+          },
+        },
+      },
+      ErrorResponse: {
+        type: 'object',
+        properties: {
+          message: { type: 'string', example: 'Invalid email or password' },
+        },
+      },
+    },
+  },
   paths: {
     '/api/v1/health': {
       get: {
@@ -28,6 +66,84 @@ const spec = {
                   ok: true,
                   db: 'up',
                 },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/auth/register': {
+      post: {
+        summary: 'Register a new user',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/AuthRequest' },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'User created',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/RegisterResponse' },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          409: {
+            description: 'Email already in use',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/auth/login': {
+      post: {
+        summary: 'Login user and receive JWT',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: { $ref: '#/components/schemas/AuthRequest' },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Login successful',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/LoginResponse' },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          401: {
+            description: 'Invalid credentials',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
               },
             },
           },
