@@ -54,11 +54,9 @@ export const loginUserService = async ({ email, password }) => {
     throw error;
   }
 
-  const jwtToken = jwt.sign(
-    { sub: user._id.toString(), email: user.email },
-    env.jwtSecret,
-    { expiresIn: '5h' }
-  );
+  const jwtToken = jwt.sign({ sub: user._id.toString(), email: user.email }, env.jwtSecret, {
+    expiresIn: '5h',
+  });
 
   return {
     token: jwtToken,
