@@ -21,6 +21,8 @@ Backend API for stock market data access (Finnhub) plus lightweight user/portfol
   - `POST /api/v1/auth/register`
   - `POST /api/v1/auth/login`
   - `GET /api/v1/auth/me` (JWT protected)
+- Stocks endpoint:
+  - `GET /api/v1/stocks/quote?symbol=AAPL`
 - Swagger UI at `GET /api-docs`
 - Auth integration tests (register/login success + failure cases)
 
@@ -100,4 +102,10 @@ Login:
 curl -X POST http://localhost:3000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"demo@example.com","password":"secret123"}'
+```
+
+Quote:
+
+```bash
+curl "http://localhost:3000/api/v1/stocks/quote?symbol=AAPL"
 ```
