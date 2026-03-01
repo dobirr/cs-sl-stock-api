@@ -74,6 +74,28 @@ const spec = {
           t: { type: 'number', description: 'Timestamp' },
         },
       },
+      ProfileResponse: {
+        type: 'object',
+        description: 'Finnhub company profile payload',
+        properties: {
+          country: { type: 'string', example: 'US' },
+          currency: { type: 'string', example: 'USD' },
+          exchange: { type: 'string', example: 'NASDAQ/NMS (GLOBAL MARKET)' },
+          finnhubIndustry: { type: 'string', example: 'Technology' },
+          ipo: { type: 'string', example: '1980-12-12' },
+          logo: {
+            type: 'string',
+            example:
+              'https://static2.finnhub.io/file/publicdatany/finnhubimage/stock_logo/AAPL.png',
+          },
+          marketCapitalization: { type: 'number', example: 3200000 },
+          name: { type: 'string', example: 'Apple Inc' },
+          phone: { type: 'string', example: '14089961010.0' },
+          shareOutstanding: { type: 'number', example: 15200 },
+          ticker: { type: 'string', example: 'AAPL' },
+          weburl: { type: 'string', example: 'https://www.apple.com/' },
+        },
+      },
     },
   },
   paths: {
@@ -230,6 +252,62 @@ const spec = {
             content: {
               'application/json': {
                 schema: { $ref: '#/components/schemas/QuoteResponse' },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          404: {
+            description: 'Symbol not found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          429: {
+            description: 'Finnhub rate limit exceeded',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          502: {
+            description: 'Finnhub unavailable',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/stocks/profile': {
+      get: {
+        summary: 'Get stock profile',
+        parameters: [
+          {
+            name: 'symbol',
+            in: 'query',
+            required: true,
+            schema: { type: 'string' },
+            example: 'AAPL',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Company profile data',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ProfileResponse' },
               },
             },
           },

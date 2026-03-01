@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { getQuote } from '../controllers/stocks.controller.js';
+import { getProfile, getQuote } from '../controllers/stocks.controller.js';
 
 const stocksRouter = Router();
 
 stocksRouter.get('/quote', getQuote);
+
+stocksRouter.get('/profile', getProfile);
 
 export default stocksRouter;

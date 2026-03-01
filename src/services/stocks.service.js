@@ -37,3 +37,23 @@ export const getQuoteService = async (symbol) => {
     throw mappedError;
   }
 };
+
+export const getProfileService = async (symbol) => {
+  if (!symbol) {
+    const error = new Error('Symbol is required');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  try {
+    const result = await finnhubClient.get('/stock/profile2', {
+      params: { symbol: symbol.trim().toUpperCase() },
+    });
+    return result.data;
+  } catch (error) {
+    const normalized = mapFinnhubError(error);
+    const mappedError = new Error(normalized.message);
+    mappedError.statusCode = normalized.statusCode;
+    throw mappedError;
+  }
+};
