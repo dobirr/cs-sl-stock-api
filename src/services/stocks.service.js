@@ -26,7 +26,7 @@ export const getQuoteService = async (symbol) => {
         fetchedAt: new Date(),
         expiresAt: new Date(Date.now() + 60_000),
       },
-      { upsert: true, new: true },
+      { upsert: true, returnDocument: 'after'  },
     );
 
     return fresh.data;
