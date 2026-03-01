@@ -4,10 +4,10 @@ import { requireAuth } from '../middlewares/auth.middleware.js';
 
 const authRouter = Router();
 
-authRouter.post('/api/v1/auth/register', registerUser);
+authRouter.post('/register', registerUser);
 
-authRouter.post('/api/v1/auth/login', loginUser);
+authRouter.post('/login', loginUser);
 
-authRouter.get('/api/v1/auth/me', requireAuth, getMe);
+authRouter.get('/me', requireAuth, getMe);
 
 export default authRouter;

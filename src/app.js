@@ -13,6 +13,10 @@ import { errorHandler } from './middlewares/error.middleware.js';
 
 const app = express();
 
+const API_PREFIX = '/api/v1';
+const AUTH_BASE = `${API_PREFIX}/auth`;
+const HEALTH_BASE = `${API_PREFIX}/health`;
+
 if (env.nodeEnv !== 'test') {
   app.use(morgan('dev'));
 }
@@ -21,8 +25,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use(healthRouter);
-app.use(authRouter);
+app.use(HEALTH_BASE, healthRouter);
+app.use(AUTH_BASE, authRouter);
 
 setupSwagger(app);
 
