@@ -9,6 +9,13 @@ const spec = {
   },
   servers: [{ url: 'http://localhost:3000' }],
   components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
     schemas: {
       AuthRequest: {
         type: 'object',
@@ -36,6 +43,15 @@ const spec = {
               email: { type: 'string', format: 'email', example: 'user@example.com' },
             },
           },
+        },
+      },
+      MeResponse: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', example: '65f1a0d8d9b3e65f2f6e01a1' },
+          email: { type: 'string', format: 'email', example: 'user@example.com' },
+          createdAt: { type: 'string', format: 'date-time' },
+          updatedAt: { type: 'string', format: 'date-time' },
         },
       },
       ErrorResponse: {
@@ -141,6 +157,38 @@ const spec = {
           },
           401: {
             description: 'Invalid credentials',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/auth/me': {
+      get: {
+        summary: 'Get current authenticated user',
+        security: [{ BearerAuth: [] }],
+        responses: {
+          200: {
+            description: 'Current user',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/MeResponse' },
+              },
+            },
+          },
+          401: {
+            description: 'Unauthorized',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          404: {
+            description: 'User not found',
             content: {
               'application/json': {
                 schema: { $ref: '#/components/schemas/ErrorResponse' },
