@@ -26,7 +26,7 @@ export const getQuoteService = async (symbol) => {
         fetchedAt: new Date(),
         expiresAt: new Date(Date.now() + 60_000),
       },
-      { upsert: true, returnDocument: 'after'  },
+      { upsert: true, returnDocument: 'after' },
     );
 
     return fresh.data;
@@ -49,6 +49,24 @@ export const getProfileService = async (symbol) => {
     const result = await finnhubClient.get('/stock/profile2', {
       params: { symbol: symbol.trim().toUpperCase() },
     });
+    return result.data;
+  } catch (error) {
+    const normalized = mapFinnhubError(error);
+    const mappedError = new Error(normalized.message);
+    mappedError.statusCode = normalized.statusCode;
+    throw mappedError;
+  }
+};
+
+export const searchStocksService = async (q) => {
+  if (!q) {
+    const error = new Error('Query is required');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  try {
+    const result = await finnhubClient.get('/search', { params: { q } });
     return result.data;
   } catch (error) {
     const normalized = mapFinnhubError(error);

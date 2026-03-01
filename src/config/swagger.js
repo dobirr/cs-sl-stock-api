@@ -96,6 +96,25 @@ const spec = {
           weburl: { type: 'string', example: 'https://www.apple.com/' },
         },
       },
+      SearchResponse: {
+        type: 'object',
+        description: 'Finnhub search payload',
+        properties: {
+          count: { type: 'number', example: 1 },
+          result: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                description: { type: 'string', example: 'APPLE INC' },
+                displaySymbol: { type: 'string', example: 'AAPL' },
+                symbol: { type: 'string', example: 'AAPL' },
+                type: { type: 'string', example: 'Common Stock' },
+              },
+            },
+          },
+        },
+      },
     },
   },
   paths: {
@@ -321,6 +340,62 @@ const spec = {
           },
           404: {
             description: 'Symbol not found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          429: {
+            description: 'Finnhub rate limit exceeded',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          502: {
+            description: 'Finnhub unavailable',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/stocks/search': {
+      get: {
+        summary: 'Search stocks',
+        parameters: [
+          {
+            name: 'q',
+            in: 'query',
+            required: true,
+            schema: { type: 'string' },
+            example: 'apple',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Search results',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/SearchResponse' },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          404: {
+            description: 'No results or symbol not found',
             content: {
               'application/json': {
                 schema: { $ref: '#/components/schemas/ErrorResponse' },

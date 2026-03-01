@@ -1,4 +1,6 @@
-import { getQuoteService, getProfileService } from '../services/stocks.service.js';
+import {getQuoteService,
+  getProfileService,
+  searchStocksService,} from '../services/stocks.service.js';
 
 export const getQuote = async (req, res, next) => {
   try {
@@ -15,6 +17,16 @@ export const getProfile = async (req, res, next) => {
     const { symbol } = req.query;
     const profile = await getProfileService(symbol);
     return res.status(200).json(profile);
+  } catch (error) {
+    return next(error);
+  }
+};
+
+export const getSearch = async (req, res, next) => {
+  try {
+    const { q } = req.query;
+    const result = await searchStocksService(q);
+    return res.status(200).json(result);
   } catch (error) {
     return next(error);
   }

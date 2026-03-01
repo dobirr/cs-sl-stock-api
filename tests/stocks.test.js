@@ -82,4 +82,31 @@ describe('Stocks API', () => {
     expect(res.body).to.deep.equal(mockProfile);
     expect(stub.calledOnce).to.equal(true);
   });
+
+  it('GET /api/v1/stocks/search without q -> 400', async () => {
+    const res = await request(app).get('/api/v1/stocks/search');
+    expect(res.status).to.equal(400);
+    expect(res.body).to.have.property('message');
+  });
+
+  it('GET /api/v1/stocks/search -> 200', async () => {
+    const mockSearch = {
+      count: 1,
+      result: [
+        {
+          description: 'APPLE INC',
+          displaySymbol: 'AAPL',
+          symbol: 'AAPL',
+          type: 'Common Stock',
+        },
+      ],
+    };
+    const stub = sinon.stub(finnhubClient, 'get').resolves({ data: mockSearch });
+
+    const res = await request(app).get('/api/v1/stocks/search').query({ q: 'apple' });
+
+    expect(res.status).to.equal(200);
+    expect(res.body).to.deep.equal(mockSearch);
+    expect(stub.calledOnce).to.equal(true);
+  });
 });
