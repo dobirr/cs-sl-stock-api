@@ -12,4 +12,5 @@ export const env = {
   port: toNumber(process.env.PORT, 3000),
   mongodbUri: process.env.MONGODB_URI ?? 'mongodb://localhost:27017/stockapp',
   jwtSecret: process.env.JWT_SECRET,
+  finnhubApiKey: process.env.FINNHUB_API_KEY,
 };

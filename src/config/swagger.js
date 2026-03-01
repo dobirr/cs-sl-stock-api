@@ -60,6 +60,20 @@ const spec = {
           message: { type: 'string', example: 'Invalid email or password' },
         },
       },
+      QuoteResponse: {
+        type: 'object',
+        description: 'Finnhub quote payload',
+        properties: {
+          c: { type: 'number', description: 'Current price' },
+          d: { type: 'number', description: 'Change' },
+          dp: { type: 'number', description: 'Percent change' },
+          h: { type: 'number', description: 'High price of the day' },
+          l: { type: 'number', description: 'Low price of the day' },
+          o: { type: 'number', description: 'Open price of the day' },
+          pc: { type: 'number', description: 'Previous close price' },
+          t: { type: 'number', description: 'Timestamp' },
+        },
+      },
     },
   },
   paths: {
@@ -189,6 +203,62 @@ const spec = {
           },
           404: {
             description: 'User not found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+        },
+      },
+    },
+    '/api/v1/stocks/quote': {
+      get: {
+        summary: 'Get stock quote',
+        parameters: [
+          {
+            name: 'symbol',
+            in: 'query',
+            required: true,
+            schema: { type: 'string' },
+            example: 'AAPL',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Quote data',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/QuoteResponse' },
+              },
+            },
+          },
+          400: {
+            description: 'Validation error',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          404: {
+            description: 'Symbol not found',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          429: {
+            description: 'Finnhub rate limit exceeded',
+            content: {
+              'application/json': {
+                schema: { $ref: '#/components/schemas/ErrorResponse' },
+              },
+            },
+          },
+          502: {
+            description: 'Finnhub unavailable',
             content: {
               'application/json': {
                 schema: { $ref: '#/components/schemas/ErrorResponse' },
