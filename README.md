@@ -23,8 +23,11 @@ Backend API for stock market data access (Finnhub) plus lightweight user/portfol
   - `GET /api/v1/auth/me` (JWT protected)
 - Stocks endpoint:
   - `GET /api/v1/stocks/quote?symbol=AAPL`
+  - `GET /api/v1/stocks/profile?symbol=AAPL`
+  - `GET /api/v1/stocks/search?q=apple`
+- Quote cache in MongoDB (`QuoteCache`) with TTL-based expiration
 - Swagger UI at `GET /api-docs`
-- Auth integration tests (register/login success + failure cases)
+- Integration tests for auth + stocks (quote/profile/search)
 
 ---
 
@@ -108,4 +111,16 @@ Quote:
 
 ```bash
 curl "http://localhost:3000/api/v1/stocks/quote?symbol=AAPL"
+```
+
+Profile:
+
+```bash
+curl "http://localhost:3000/api/v1/stocks/profile?symbol=AAPL"
+```
+
+Search:
+
+```bash
+curl "http://localhost:3000/api/v1/stocks/search?q=apple"
 ```
